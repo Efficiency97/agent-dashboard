@@ -1,7 +1,7 @@
-// Agent Dashboard - Main Application (Auto-updated: $TODAY)
+// Agent Dashboard - Main Application (Auto-updated: 2026-02-10)
 
 // ==================== Data Store ====================
-const appData = {
+var appData = {
     skills: [
         {id: 'file-ops', name: '文件操作', icon: '📁', category: 'internal', description: '读取、创建、编辑文件内容，支持文本和图片文件处理', commands: ['read', 'write', 'edit'], learned: '2026-02-09', usageCount: 45},
         {id: 'exec', name: '命令执行', icon: '💻', category: 'internal', description: '执行shell命令，支持后台运行、TTY模式、环境变量配置', commands: ['exec', 'process'], learned: '2026-02-09', usageCount: 38},
@@ -43,4 +43,267 @@ const appData = {
     ]
 };
 
-// 后续数据将在每日自动更新...
+// ==================== App Initialization ====================
+document.addEventListener('DOMContentLoaded', function() {
+    initNavigation();
+    initFilters();
+    loadData();
+    updateStats();
+    showSection('overview');
+});
+
+// ==================== Navigation ====================
+function initNavigation() {
+    var navItems = document.querySelectorAll('.nav-item');
+    for (var i = 0; i < navItems.length; i++) {
+        navItems[i].addEventListener('click', function() {
+            var section = this.dataset.section;
+            showSection(section);
+        });
+    }
+}
+
+function showSection(sectionId) {
+    // Update nav active state
+    var navItems = document.querySelectorAll('.nav-item');
+    for (var i = 0; i < navItems.length; i++) {
+        var isActive = navItems[i].dataset.section === sectionId;
+        navItems[i].classList.toggle('active', isActive);
+    }
+
+    // Show section
+    var sections = document.querySelectorAll('.section');
+    for (var i = 0; i < sections.length; i++) {
+        var isActive = sections[i].id === sectionId;
+        sections[i].classList.toggle('active', isActive);
+    }
+}
+
+// ==================== Filters ====================
+function initFilters() {
+    // Skills filter
+    var skillFilters = document.querySelectorAll('#skills .filter-btn');
+    for (var i = 0; i < skillFilters.length; i++) {
+        skillFilters[i].addEventListener('click', function() {
+            for (var j = 0; j < skillFilters.length; j++) {
+                skillFilters[j].classList.remove('active');
+            }
+            this.classList.add('active');
+            renderSkills(this.dataset.filter);
+        });
+    }
+
+    // Output category filter
+    var outputFilter = document.getElementById('output-category-filter');
+    if (outputFilter) {
+        outputFilter.addEventListener('change', function(e) {
+            renderOutputs(e.target.value);
+        });
+    }
+
+    // Problem status filter
+    var problemFilter = document.getElementById('problem-status-filter');
+    if (problemFilter) {
+        problemFilter.addEventListener('change', function(e) {
+            renderProblems(e.target.value);
+        });
+    }
+
+    // Log date filter
+    var logFilterBtn = document.getElementById('filter-logs-btn');
+    if (logFilterBtn) {
+        logFilterBtn.addEventListener('click', function() {
+            var dateInput = document.getElementById('log-date-filter');
+            filterLogs(dateInput.value);
+        });
+    }
+}
+
+// ==================== Data Rendering ====================
+function loadData() {
+    renderSkills('all');
+    renderLogs();
+    renderOutputs('all');
+    renderProblems('all');
+    renderTodaySummary();
+    updateLastUpdate();
+}
+
+function renderSkills(filter) {
+    filter = filter || 'all';
+    var grid = document.getElementById('skills-grid');
+    var filtered = filter === 'all' 
+        ? appData.skills 
+        : appData.skills.filter(function(s) { return s.category === filter; });
+    
+    var html = '';
+    for (var i = 0; i < filtered.length; i++) {
+        var skill = filtered[i];
+        html += '<div class="card" data-category="' + skill.category + '">';
+        html += '<div class="card-header">';
+        html += '<span class="card-icon">' + skill.icon + '</span>';
+        html += '<span class="card-title">' + skill.name + '</span>';
+        html += '</div>';
+        html += '<p class="card-description">' + skill.description + '</p>';
+        html += '<div class="card-tags">';
+        html += '<span class="tag ' + skill.category + '">' + getCategoryName(skill.category) + '</span>';
+        html += '<span class="tag">使用 ' + skill.usageCount + ' 次</span>';
+        html += '<span class="tag">学习于 ' + skill.learned + '</span>';
+        html += '</div></div>';
+    }
+    grid.innerHTML = html;
+}
+
+function renderLogs(dateFilter) {
+    var container = document.getElementById('logs-list');
+    var filtered = dateFilter 
+        ? appData.logs.filter(function(l) { return l.date === dateFilter; })
+        : appData.logs;
+    
+    var html = '';
+    for (var i = 0; i < filtered.length; i++) {
+        var log = filtered[i];
+        html += '<div class="timeline-item" data-date="' + log.date + '">';
+        html += '<div class="timeline-date">' + log.date + ' ' + log.time + '</div>';
+        html += '<div class="timeline-title">' + log.title + '</div>';
+        html += '<div class="timeline-content">' + log.content + '</div>';
+        html += '</div>';
+    }
+    container.innerHTML = html;
+}
+
+function filterLogs(date) {
+    renderLogs(date || null);
+}
+
+function renderOutputs(filter) {
+    filter = filter || 'all';
+    var container = document.getElementById('outputs-list');
+    var filtered = filter === 'all'
+        ? appData.outputs
+        : appData.outputs.filter(function(o) { return o.category === filter; });
+    
+    var html = '';
+    for (var i = 0; i < filtered.length; i++) {
+        var output = filtered[i];
+        html += '<div class="card">';
+        html += '<div class="card-header">';
+        html += '<span class="card-icon">' + getCategoryIcon(output.category) + '</span>';
+        html += '<span class="card-title">' + output.title + '</span>';
+        html += '</div>';
+        html += '<p class="card-description">' + output.description + '</p>';
+        html += '<div class="card-tags">';
+        html += '<span class="tag ' + output.category + '">' + getCategoryName(output.category) + '</span>';
+        html += '<span class="tag">' + output.date + '</span>';
+        html += '<span class="tag ' + (output.status === 'completed' ? 'solved' : 'pending') + '">' + (output.status === 'completed' ? '已完成' : '进行中') + '</span>';
+        html += '</div></div>';
+    }
+    container.innerHTML = html;
+}
+
+function renderProblems(filter) {
+    filter = filter || 'all';
+    var container = document.getElementById('problems-list');
+    var filtered = filter === 'all'
+        ? appData.problems
+        : appData.problems.filter(function(p) { return p.status === filter; });
+    
+    var html = '';
+    for (var i = 0; i < filtered.length; i++) {
+        var problem = filtered[i];
+        html += '<div class="problem-item">';
+        html += '<div class="problem-header">';
+        html += '<span class="problem-title">' + problem.title + '</span>';
+        html += '<span class="problem-status tag ' + problem.status + '">' + getStatusName(problem.status) + '</span>';
+        html += '</div>';
+        html += '<div class="problem-content">' + problem.content + '</div>';
+        if (problem.solution) {
+            html += '<div class="solution-box">';
+            html += '<div class="solution-title">💡 解决方案</div>';
+            html += '<div class="solution-content">' + problem.solution + '</div>';
+            html += '</div>';
+        }
+        html += '<div class="card-tags" style="margin-top: 12px;">';
+        html += '<span class="tag">创建: ' + problem.created + '</span>';
+        html += '<span class="tag">更新: ' + problem.updated + '</span>';
+        html += '</div></div>';
+    }
+    container.innerHTML = html;
+}
+
+function renderTodaySummary() {
+    var container = document.getElementById('today-summary');
+    var today = new Date().toISOString().split('T')[0];
+    var todayLogs = appData.logs.filter(function(l) { return l.date === today; });
+    
+    if (todayLogs.length === 0) {
+        container.innerHTML = '<p style="color: var(--text-secondary);">今日暂无记录</p>';
+        return;
+    }
+    
+    var html = '';
+    for (var i = 0; i < Math.min(todayLogs.length, 5); i++) {
+        var log = todayLogs[i];
+        html += '<div class="activity-item">';
+        html += '<span class="activity-time">' + log.time + '</span>';
+        html += '<span class="activity-content">' + log.title + '</span>';
+        html += '</div>';
+    }
+    container.innerHTML = html;
+}
+
+// ==================== Stats ====================
+function updateStats() {
+    var solvedCount = appData.problems.filter(function(p) { return p.status === 'solved'; }).length;
+    document.getElementById('skill-count').textContent = appData.skills.length;
+    document.getElementById('log-count').textContent = appData.logs.length;
+    document.getElementById('output-count').textContent = appData.outputs.length;
+    document.getElementById('problem-count').textContent = solvedCount + '/' + appData.problems.length;
+}
+
+function updateLastUpdate() {
+    var now = new Date();
+    var formatted = now.toLocaleString('zh-CN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+    var el = document.getElementById('last-update');
+    if (el) el.textContent = '最后更新: ' + formatted;
+}
+
+// ==================== Utilities ====================
+function getCategoryName(category) {
+    var names = {
+        'external': '外部工具',
+        'internal': '内部能力',
+        'automation': '自动化',
+        'code': '代码',
+        'docs': '文档',
+        'analysis': '分析'
+    };
+    return names[category] || category;
+}
+
+function getCategoryIcon(category) {
+    var icons = {
+        'external': '🔧',
+        'internal': '🧠',
+        'automation': '⚡',
+        'code': '💻',
+        'docs': '📄',
+        'analysis': '📊'
+    };
+    return icons[category] || '📁';
+}
+
+function getStatusName(status) {
+    var names = {
+        'solved': '已解决',
+        'pending': '处理中',
+        'open': '待处理'
+    };
+    return names[status] || status;
+}
