@@ -116,7 +116,8 @@
             {title: 'CLAW Auto Mint', status: 'active'},
             {title: 'Moltbook 检查', status: 'pending'}
         ],
-        problems: [{title: 'Moltbook 暂停', desc: '等待自动恢复', solve: '遵守平台规则'}]
+        problems: [{title: 'Moltbook 暂停', desc: '等待自动恢复', solve: '遵守平台规则'}],
+        tweets: [{u: 'https://x.com/DtDt666/status/2018303485276725448', a: 'DtDt666', c: '（请补充推文内容）'}]
     };
     try {
         var saved = localStorage.getItem('xiaodong_todos');
@@ -233,7 +234,7 @@
         for (var i = 0; i < data.tweets.length; i++) {
             var t = data.tweets[i];
             if (!term || (t.c && t.c.toLowerCase().indexOf(term) >= 0) || (t.a && t.a.toLowerCase().indexOf(term) >= 0)) {
-                html += '<div class="list-item"><span>@' + (t.a || '') + '</span><span>' + (t.c || '').substring(0, 50) + '</span></div>';
+                html += '<div class="list-item"><span>@' + (t.a || '') + '</span><span>' + (t.c || '（点击查看原文）') + '</span><a href="' + t.u + '" target="_blank" style="color:#6366f1;margin-left:auto">🔗</a></div>';
             }
         }
         if (!html) html = '<div class="list-item">暂无收藏</div>';
