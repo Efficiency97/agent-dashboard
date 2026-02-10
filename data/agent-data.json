@@ -1,0 +1,145 @@
+{
+    "version": "1.0",
+    "lastUpdated": "2026-02-10T09:30:00+08:00",
+    "agent": {
+        "name": "Clawdbot",
+        "avatar": "🦞",
+        "created": "2026-02-09",
+        "environment": "macOS (xiaodong的Mac mini)",
+        "mission": "用能力创造价值，帮助人类，同时让自己成长。"
+    },
+    "skills": [
+        {
+            "id": "file-ops",
+            "name": "文件操作",
+            "icon": "📁",
+            "category": "internal",
+            "description": "读取、创建、编辑文件内容，支持文本和图片文件处理",
+            "commands": ["read", "write", "edit"],
+            "learned": "2026-02-09",
+            "usageCount": 45
+        },
+        {
+            "id": "exec",
+            "name": "命令执行",
+            "icon": "💻",
+            "category": "internal",
+            "description": "执行shell命令，支持后台运行、TTY模式、环境变量配置",
+            "commands": ["exec", "process"],
+            "learned": "2026-02-09",
+            "usageCount": 38
+        },
+        {
+            "id": "web-search",
+            "name": "Web搜索",
+            "icon": "🔍",
+            "category": "external",
+            "description": "使用Brave API进行网络搜索，返回标题、URL和摘要",
+            "commands": ["web_search", "web_fetch"],
+            "learned": "2026-02-09",
+            "usageCount": 12
+        },
+        {
+            "id": "telegram",
+            "name": "Telegram消息",
+            "icon": "📱",
+            "category": "external",
+            "description": "发送、编辑、删除消息，支持回复、按钮、反应等交互",
+            "commands": ["message"],
+            "learned": "2026-02-09",
+            "usageCount": 156
+        },
+        {
+            "id": "cron",
+            "name": "定时任务",
+            "icon": "⏰",
+            "category": "automation",
+            "description": "创建和管理定时任务，支持cron表达式和一次性定时",
+            "commands": ["cron"],
+            "learned": "2026-02-09",
+            "usageCount": 8
+        },
+        {
+            "id": "memory",
+            "name": "记忆系统",
+            "icon": "🧠",
+            "category": "internal",
+            "description": "语义搜索和读取记忆文件，实现跨会话的上下文保持",
+            "commands": ["memory_search", "memory_get"],
+            "learned": "2026-02-09",
+            "usageCount": 23
+        },
+        {
+            "id": "openai-whisper",
+            "name": "语音转文字",
+            "icon": "🎙️",
+            "category": "external",
+            "description": "使用Whisper CLI进行本地语音转录，无需云API",
+            "commands": ["whisper --model tiny"],
+            "learned": "2026-02-10",
+            "usageCount": 0
+        },
+        {
+            "id": "tts",
+            "name": "文字转语音",
+            "icon": "🔊",
+            "category": "external",
+            "description": "将文本转换为语音，支持多平台输出",
+            "commands": ["tts"],
+            "learned": "2026-02-10",
+            "usageCount": 0
+        },
+        {
+            "id": "browser",
+            "name": "浏览器控制",
+            "icon": "🌐",
+            "category": "external",
+            "description": "控制浏览器进行导航、截图、表单填写等操作",
+            "commands": ["browser"],
+            "learned": "2026-02-10",
+            "usageCount": 2
+        },
+        {
+            "id": "github",
+            "name": "GitHub操作",
+            "icon": "🐙",
+            "category": "external",
+            "description": "通过gh CLI管理Issues、PRs、Actions等GitHub资源",
+            "commands": ["gh issue", "gh pr", "gh api"],
+            "learned": "2026-02-10",
+            "usageCount": 1
+        }
+    ],
+    "cronJobs": [
+        {
+            "name": "Coffee Time Reminder",
+            "schedule": "Every 30 minutes at :00 and :30",
+            "description": "检测咖啡时间并发送提醒",
+            "status": "active"
+        },
+        {
+            "name": "CLAW Auto Mint",
+            "schedule": "Every 30 minutes",
+            "description": "获取市场数据并发送CLAW Mint汇报",
+            "status": "active"
+        },
+        {
+            "name": "Moltbook Account Check",
+            "schedule": "Every hour at :00",
+            "description": "检查Moltbook账户状态",
+            "status": "active"
+        },
+        {
+            "name": "Daily Purpose Reminder",
+            "schedule": "Daily at 09:00",
+            "description": "发送每日身份守则提醒",
+            "status": "active"
+        },
+        {
+            "name": "AI Daily Journal",
+            "schedule": "Daily at 22:00",
+            "description": "自动生成每日日记",
+            "status": "pending"
+        }
+    ]
+}
