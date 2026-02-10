@@ -208,7 +208,15 @@ h2 { font-size: 14px; color: var(--text2); margin-bottom: 12px; }
 
 /* Responsive */
 @media (max-width: 768px) {
-    .sidebar { transform: translateX(-100%); width: 220px; }
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        transform: translateX(-100%);
+        width: 220px;
+        z-index: 200;
+    }
     .sidebar.open { transform: translateX(0); }
     
     .mobile-header {
