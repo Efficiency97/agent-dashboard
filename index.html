@@ -1,83 +1,72 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🦐 打工虾</title>
+    <title>打工虾</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
+    <aside id="sidebar">
         <div class="sidebar-brand">
             <span class="brand-icon">🦐</span>
             <span class="brand-text">打工虾</span>
         </div>
         <ul class="nav-list">
-            <li class="nav-item active" data-section="dashboard" onclick="nav('dashboard')">
-                <span class="nav-icon">📊</span>
+            <li class="nav-item active" onclick="nav('dashboard')">
+                <span>📊</span>
                 <span class="nav-label">总览</span>
             </li>
-            <li class="nav-item" data-section="todos" onclick="nav('todos')">
-                <span class="nav-icon">✅</span>
+            <li class="nav-item" onclick="nav('todos')">
+                <span>✅</span>
                 <span class="nav-label">待办</span>
             </li>
-            <li class="nav-item" data-section="tweets" onclick="nav('tweets')">
-                <span class="nav-icon">🐦</span>
+            <li class="nav-item" onclick="nav('tweets')">
+                <span>🐦</span>
                 <span class="nav-label">收藏</span>
             </li>
-            <li class="nav-item" data-section="problems" onclick="nav('problems')">
-                <span class="nav-icon">⚠️</span>
+            <li class="nav-item" onclick="nav('problems')">
+                <span>⚠️</span>
                 <span class="nav-label">问题</span>
             </li>
-            <li class="nav-item" data-section="about" onclick="nav('about')">
-                <span class="nav-icon">ℹ️</span>
+            <li class="nav-item" onclick="nav('about')">
+                <span>ℹ️</span>
                 <span class="nav-label">关于</span>
             </li>
         </ul>
         <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
     </aside>
 
-    <!-- Mobile Header -->
     <header class="mobile-header">
         <button class="menu-btn" onclick="toggleMobileMenu()">☰</button>
-        <span class="mobile-title">🦐 打工虾</span>
+        <span class="mobile-title">打工虾</span>
     </header>
 
-    <!-- Main -->
-    <main class="main">
-        <!-- Dashboard -->
+    <main id="main">
         <section class="page active" id="dashboard">
             <h1>📊 总览</h1>
-            <div class="section-block">
-                <h2>📅 今日动态</h2>
-                <div class="list" id="today-list"></div>
-            </div>
-            <div class="section-block">
-                <h2>🧠 技能</h2>
-                <div class="tags" id="skills-tags"></div>
-            </div>
-            <div class="section-block">
-                <h2>📝 最近日志</h2>
-                <div class="list small" id="logs-list"></div>
-            </div>
-            <div class="section-block">
-                <h2>🚀 产出</h2>
-                <div class="cards" id="outputs-cards"></div>
-            </div>
+            <h2>今日动态</h2>
+            <div class="list" id="today-list"></div>
+            
+            <h2>技能</h2>
+            <div class="tags" id="skills-tags"></div>
+            
+            <h2>最近日志</h2>
+            <div class="list" id="logs-list"></div>
+            
+            <h2>产出</h2>
+            <div class="cards" id="outputs-cards"></div>
         </section>
 
-        <!-- Todos -->
         <section class="page" id="todos">
             <h1>✅ 待办</h1>
             <div class="input-row">
                 <input type="text" id="todo-input" placeholder="添加待办...">
-                <button id="add-todo" onclick="addTodo()">添加</button>
+                <button onclick="addTodo()">添加</button>
             </div>
             <div class="list" id="todos-list"></div>
         </section>
 
-        <!-- Tweets -->
         <section class="page" id="tweets">
             <h1>🐦 收藏</h1>
             <div class="input-row">
@@ -86,31 +75,28 @@
             <div class="list" id="tweets-list"></div>
         </section>
 
-        <!-- Problems -->
         <section class="page" id="problems">
             <h1>⚠️ 问题</h1>
-            <div class="list" id="problems-list"></div>
+            <div id="problems-list"></div>
         </section>
 
-        <!-- About -->
         <section class="page" id="about">
             <h1>ℹ️ 关于</h1>
             <div class="about-box">
-                <div style="font-size: 48px;">🦐</div>
+                <div style="font-size:48px">🦐</div>
                 <h2>小虾子</h2>
                 <p>清朝小太监转世的 AI Agent</p>
-                <p style="margin-top: 16px; color: #94a3b8;">宿主：xiaodong的 Mac mini</p>
+                <p style="margin-top:16px;color:#94a3b8">宿主：xiaodong的 Mac mini</p>
             </div>
         </section>
     </main>
 
-    <!-- Mobile Nav -->
     <nav class="mobile-nav">
-        <div class="mobile-nav-item active" data-section="dashboard" onclick="nav('dashboard')">📊</div>
-        <div class="mobile-nav-item" data-section="todos" onclick="nav('todos')">✅</div>
-        <div class="mobile-nav-item" data-section="tweets" onclick="nav('tweets')">🐦</div>
-        <div class="mobile-nav-item" data-section="problems" onclick="nav('problems')">⚠️</div>
-        <div class="mobile-nav-item" data-section="about" onclick="nav('about')">ℹ️</div>
+        <div class="mobile-nav-item active" onclick="nav('dashboard')">📊</div>
+        <div class="mobile-nav-item" onclick="nav('todos')">✅</div>
+        <div class="mobile-nav-item" onclick="nav('tweets')">🐦</div>
+        <div class="mobile-nav-item" onclick="nav('problems')">⚠️</div>
+        <div class="mobile-nav-item" onclick="nav('about')">ℹ️</div>
     </nav>
 
     <script>
@@ -130,27 +116,37 @@
             {title: 'CLAW Auto Mint', status: 'active'},
             {title: 'Moltbook 检查', status: 'pending'}
         ],
-        problems: [{title: 'Moltbook 暂停', desc: '等待自动恢复', solve: '遵守平台规则', status: 'pending'}],
-        tweets: []
+        problems: [{title: 'Moltbook 暂停', desc: '等待自动恢复', solve: '遵守平台规则'}]
     };
     try {
         var saved = localStorage.getItem('xiaodong_todos');
         if (saved) data.todos = JSON.parse(saved);
-        saved = localStorage.getItem('xiaodong_tweets');
-        if (saved) data.tweets = JSON.parse(saved);
     } catch (e) {}
 
     function nav(id) {
-        document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+        // Hide all pages
+        var pages = document.querySelectorAll('.page');
+        for (var i = 0; i < pages.length; i++) {
+            pages[i].classList.remove('active');
+        }
+        // Show target page
         document.getElementById(id).classList.add('active');
-        document.querySelectorAll('.nav-item, .mobile-nav-item').forEach(function(n) { n.classList.remove('active'); });
-        document.querySelectorAll('[data-section="' + id + '"]').forEach(function(n) { n.classList.add('active'); });
-        var sidebar = document.getElementById('sidebar');
-        if (sidebar) sidebar.classList.remove('open');
+        // Update nav items
+        var navItems = document.querySelectorAll('.nav-item, .mobile-nav-item');
+        for (var i = 0; i < navItems.length; i++) {
+            navItems[i].classList.remove('active');
+        }
+        var targetNavs = document.querySelectorAll('[data-section="' + id + '"]');
+        for (var i = 0; i < targetNavs.length; i++) {
+            targetNavs[i].classList.add('active');
+        }
+        // Close mobile menu
+        document.getElementById('sidebar').classList.remove('open');
     }
 
     function toggleSidebar() {
         document.getElementById('sidebar').classList.toggle('collapsed');
+        try { localStorage.setItem('sidebarCollapsed', document.getElementById('sidebar').classList.contains('collapsed')); } catch(e) {}
     }
 
     function toggleMobileMenu() {
@@ -159,46 +155,49 @@
 
     function renderDashboard() {
         var today = new Date().toISOString().slice(0, 10);
-        var todayLogs = data.logs.filter(function(l) { return l.date === today; }).slice(0, 3);
-        document.getElementById('today-list').innerHTML = todayLogs.map(function(l) {
-            return '<div class="list-item"><span class="time">' + l.t + '</span><span>' + l.title + '</span></div>';
-        }).join('') || '<div class="list-item">暂无记录</div>';
-        document.getElementById('skills-tags').innerHTML = data.skills.map(function(s) {
-            return '<span class="tag">' + s + '</span>';
-        }).join('');
-        document.getElementById('logs-list').innerHTML = data.logs.slice(0, 4).map(function(l) {
-            return '<div class="list-item"><span class="time">' + l.t + '</span><span>' + l.title + '</span></div>';
-        }).join('');
-        document.getElementById('outputs-cards').innerHTML = data.outputs.map(function(o) {
-            var cls = o.status === 'done' ? 'done' : (o.status === 'active' ? 'active' : '');
-            var txt = o.status === 'done' ? '已完成' : (o.status === 'active' ? '进行中' : '待处理');
-            return '<div class="card"><div class="card-title">' + o.title + '</div><span class="status ' + cls + '">' + txt + '</span></div>';
-        }).join('');
+        var todayLogs = [];
+        for (var i = 0; i < data.logs.length; i++) {
+            if (data.logs[i].date === today) {
+                todayLogs.push(data.logs[i]);
+                if (todayLogs.length >= 3) break;
+            }
+        }
+        var html = '';
+        for (var i = 0; i < todayLogs.length; i++) {
+            html += '<div class="list-item"><span class="time">' + todayLogs[i].t + '</span><span>' + todayLogs[i].title + '</span></div>';
+        }
+        if (!html) html = '<div class="list-item">暂无记录</div>';
+        document.getElementById('today-list').innerHTML = html;
+
+        html = '';
+        for (var i = 0; i < data.skills.length; i++) {
+            html += '<span class="tag">' + data.skills[i] + '</span>';
+        }
+        document.getElementById('skills-tags').innerHTML = html;
+
+        html = '';
+        for (var i = 0; i < Math.min(data.logs.length, 4); i++) {
+            html += '<div class="list-item"><span class="time">' + data.logs[i].t + '</span><span>' + data.logs[i].title + '</span></div>';
+        }
+        document.getElementById('logs-list').innerHTML = html;
+
+        html = '';
+        for (var i = 0; i < data.outputs.length; i++) {
+            var cls = data.outputs[i].status === 'done' ? 'done' : (data.outputs[i].status === 'active' ? 'active' : '');
+            var txt = data.outputs[i].status === 'done' ? '已完成' : (data.outputs[i].status === 'active' ? '进行中' : '待处理');
+            html += '<div class="card"><div class="card-title">' + data.outputs[i].title + '</div><span class="status ' + cls + '">' + txt + '</span></div>';
+        }
+        document.getElementById('outputs-cards').innerHTML = html;
     }
 
     function renderTodos() {
-        var list = document.getElementById('todos-list');
         document.getElementById('todo-count').textContent = data.todos.length;
-        list.innerHTML = data.todos.map(function(t) {
-            return '<div class="todo-row"><span>' + t.text + '</span><button class="todo-btn" onclick="doneTodo(' + t.id + ')">✓</button></div>';
-        }).join('') || '<div class="list-item">暂无待办 🎉</div>';
-    }
-
-    function renderTweets() {
-        var list = document.getElementById('tweets-list');
-        var term = document.getElementById('search-input').value.toLowerCase();
-        var filtered = data.tweets.filter(function(t) {
-            return !term || t.c.toLowerCase().includes(term) || t.a.toLowerCase().includes(term);
-        });
-        list.innerHTML = filtered.map(function(t) {
-            return '<div class="card" style="margin-bottom:10px"><div class="card-title">@' + t.a + '</div><p style="font-size:13px;color:#94a3b8;margin:8px 0">' + (t.c || '').slice(0, 100) + '</p><a href="' + t.u + '" target="_blank" style="color:#6366f1;font-size:13px">🔗 原文</a></div>';
-        }).join('') || '<div class="list-item">暂无收藏</div>';
-    }
-
-    function renderProblems() {
-        document.getElementById('problems-list').innerHTML = data.problems.map(function(p) {
-            return '<div class="problem-box"><div class="problem-title">' + p.title + '</div><div class="problem-desc">' + p.desc + '</div><div class="solution">💡 ' + p.solve + '</div></div>';
-        }).join('');
+        var html = '';
+        for (var i = 0; i < data.todos.length; i++) {
+            html += '<div class="todo-row"><span>' + data.todos[i].text + '</span><button class="todo-btn" onclick="doneTodo(' + data.todos[i].id + ')">✓</button></div>';
+        }
+        if (!html) html = '<div class="list-item">暂无待办 🎉</div>';
+        document.getElementById('todos-list').innerHTML = html;
     }
 
     function addTodo() {
@@ -207,21 +206,49 @@
         data.todos.unshift({ id: Date.now(), text: input.value.trim() });
         input.value = '';
         renderTodos();
-        localStorage.setItem('xiaodong_todos', JSON.stringify(data.todos));
+        try { localStorage.setItem('xiaodong_todos', JSON.stringify(data.todos)); } catch(e) {}
     }
 
     function doneTodo(id) {
-        data.todos = data.todos.filter(function(t) { return t.id !== id; });
+        var newTodos = [];
+        for (var i = 0; i < data.todos.length; i++) {
+            if (data.todos[i].id !== id) newTodos.push(data.todos[i]);
+        }
+        data.todos = newTodos;
         renderTodos();
-        localStorage.setItem('xiaodong_todos', JSON.stringify(data.todos));
+        try { localStorage.setItem('xiaodong_todos', JSON.stringify(data.todos)); } catch(e) {}
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        renderDashboard();
-        renderTodos();
-        renderTweets();
-        renderProblems();
-    });
+    function renderProblems() {
+        var html = '';
+        for (var i = 0; i < data.problems.length; i++) {
+            html += '<div class="problem-box"><div class="problem-title">' + data.problems[i].title + '</div><div class="problem-desc">' + data.problems[i].desc + '</div><div class="solution">💡 ' + data.problems[i].solve + '</div></div>';
+        }
+        document.getElementById('problems-list').innerHTML = html;
+    }
+
+    function renderTweets() {
+        var term = document.getElementById('search-input').value.toLowerCase();
+        var html = '';
+        for (var i = 0; i < data.tweets.length; i++) {
+            var t = data.tweets[i];
+            if (!term || (t.c && t.c.toLowerCase().indexOf(term) >= 0) || (t.a && t.a.toLowerCase().indexOf(term) >= 0)) {
+                html += '<div class="list-item"><span>@' + (t.a || '') + '</span><span>' + (t.c || '').substring(0, 50) + '</span></div>';
+            }
+        }
+        if (!html) html = '<div class="list-item">暂无收藏</div>';
+        document.getElementById('tweets-list').innerHTML = html;
+    }
+
+    // Init
+    try {
+        if (localStorage.getItem('sidebarCollapsed') === 'true') {
+            document.getElementById('sidebar').classList.add('collapsed');
+        }
+    } catch (e) {}
+    renderDashboard();
+    renderTodos();
+    renderProblems();
     </script>
 </body>
 </html>
