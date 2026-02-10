@@ -3,10 +3,6 @@
 // ==================== Data Store ====================
 var appData = {
     todos: [
-        {id: 1, text: '配置 Lighter Perp DEX API', status: 'pending', priority: 'high', created: '2026-02-10'},
-        {id: 2, text: '集成 Things 3 待办同步', status: 'pending', priority: 'medium', created: '2026-02-10'},
-        {id: 3, text: '启用 GitHub Pages 访问', status: 'pending', priority: 'medium', created: '2026-02-10'}
-    ],
     skills: [
         {id: 'file-ops', name: '文件操作', icon: '📁', category: 'internal', description: '读取、创建、编辑文件内容，支持文本和图片文件处理', commands: ['read', 'write', 'edit'], learned: '2026-02-09', usageCount: 45},
         {id: 'exec', name: '命令执行', icon: '💻', category: 'internal', description: '执行shell命令，支持后台运行、TTY模式、环境变量配置', commands: ['exec', 'process'], learned: '2026-02-09', usageCount: 38},
