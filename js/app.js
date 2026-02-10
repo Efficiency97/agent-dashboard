@@ -2,7 +2,9 @@
 
 // ==================== Data Store ====================
 var appData = {
-    todos: [
+    todos: [],
+var appData = {
+    todos: [],
     skills: [
         {id: 'file-ops', name: '文件操作', icon: '📁', category: 'internal', description: '读取、创建、编辑文件内容，支持文本和图片文件处理', commands: ['read', 'write', 'edit'], learned: '2026-02-09', usageCount: 45},
         {id: 'exec', name: '命令执行', icon: '💻', category: 'internal', description: '执行shell命令，支持后台运行、TTY模式、环境变量配置', commands: ['exec', 'process'], learned: '2026-02-09', usageCount: 38},
@@ -41,10 +43,9 @@ var appData = {
         {id: 1, title: 'Moltbook 账户被暂停', status: 'pending', content: '因重复发帖导致Moltbook账户被暂停，需等待自动解封', solution: '设置 MOLTBOOK_API_KEY，遵守平台规则', created: '2026-02-10', updated: '2026-02-10'},
         {id: 2, title: 'GitHub Pages 404', status: 'solved', content: '使用 gh-pages 分支而非 main 分支部署', solution: '切换到 gh-pages 分支并强制推送', created: '2026-02-10', updated: '2026-02-10'},
         {id: 3, title: 'ngrok 认证问题', status: 'open', content: 'ngrok 需要认证才能使用', solution: '启用 GitHub Pages 作为替代方案', created: '2026-02-10', updated: '2026-02-10'}
-    ]
+    ],
+    tweets: []
 };
-
-// ==================== App Initialization ====================
 document.addEventListener('DOMContentLoaded', function() {
     initNavigation();
     initFilters();
@@ -434,3 +435,173 @@ function escapeHtml(text) {
     div.textContent = text;
     return div.innerHTML;
 }
+
+// ==================== Tweets ====================
+function initTweets() {
+    var searchInput = document.getElementById('tweet-search');
+    var tagFilter = document.getElementById('tweet-tag-filter');
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            renderTweets();
+        });
+    }
+    
+    if (tagFilter) {
+        tagFilter.addEventListener('change', function() {
+            renderTweets();
+        });
+    }
+}
+
+function addTweet(tweetData) {
+    var tweet = {
+        id: Date.now(),
+        url: tweetData.url,
+        author: tweetData.author || 'Unknown',
+        content: tweetData.content || '',
+        tags: tweetData.tags || [],
+        note: tweetData.note || '',
+        created: new Date().toISOString().split('T')[0],
+        savedAt: new Date().toISOString()
+    };
+    
+    appData.tweets.unshift(tweet);
+    renderTweets();
+    renderTweetTags();
+    saveTweets();
+    
+    return tweet;
+}
+
+function deleteTweet(id) {
+    appData.tweets = appData.tweets.filter(function(t) { return t.id !== id; });
+    renderTweets();
+    renderTweetTags();
+    saveTweets();
+}
+
+function updateTweetTags(id, tags) {
+    var tweet = appData.tweets.find(function(t) { return t.id === id; });
+    if (tweet) {
+        tweet.tags = tags;
+        renderTweets();
+        renderTweetTags();
+        saveTweets();
+    }
+}
+
+function renderTweetTags() {
+    var tagFilter = document.getElementById('tweet-tag-filter');
+    if (!tagFilter) return;
+    
+    // 收集所有标签
+    var allTags = {};
+    appData.tweets.forEach(function(t) {
+        t.tags.forEach(function(tag) {
+            allTags[tag] = (allTags[tag] || 0) + 1;
+        });
+    });
+    
+    var options = '<option value="all">全部标签</option>';
+    Object.keys(allTags).sort().forEach(function(tag) {
+        options += '<option value="' + tag + '">' + tag + ' (' + allTags[tag] + ')</option>';
+    });
+    tagFilter.innerHTML = options;
+}
+
+function renderTweets() {
+    var container = document.getElementById('tweets-list');
+    if (!container) return;
+    
+    var searchTerm = document.getElementById('tweet-search').value.toLowerCase();
+    var tagFilter = document.getElementById('tweet-tag-filter').value;
+    
+    var filtered = appData.tweets.filter(function(t) {
+        // 搜索过滤
+        var matchesSearch = !searchTerm || 
+            t.content.toLowerCase().includes(searchTerm) ||
+            t.author.toLowerCase().includes(searchTerm) ||
+            t.url.toLowerCase().includes(searchTerm) ||
+            t.tags.some(function(tag) { return tag.toLowerCase().includes(searchTerm); });
+        
+        // 标签过滤
+        var matchesTag = tagFilter === 'all' || t.tags.includes(tagFilter);
+        
+        return matchesSearch && matchesTag;
+    });
+    
+    if (filtered.length === 0) {
+        container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 40px;">暂无收藏的推文<br><br>发送链接给我，我来帮你收藏！</p>';
+        return;
+    }
+    
+    var html = '';
+    for (var i = 0; i < filtered.length; i++) {
+        var tweet = filtered[i];
+        
+        html += '<div class="tweet-card">';
+        html += '<div class="tweet-header">';
+        html += '<span class="tweet-author">@' + escapeHtml(tweet.author) + '</span>';
+        html += '<span class="tweet-date">' + tweet.created + '</span>';
+        html += '</div>';
+        
+        if (tweet.content) {
+            html += '<div class="tweet-content">' + escapeHtml(tweet.content).substring(0, 200) + (tweet.content.length > 200 ? '...' : '') + '</div>';
+        }
+        
+        if (tweet.tags.length > 0) {
+            html += '<div class="tweet-tags">';
+            tweet.tags.forEach(function(tag) {
+                html += '<span class="tweet-tag">' + escapeHtml(tag) + '</span>';
+            });
+            html += '</div>';
+        }
+        
+        if (tweet.note) {
+            html += '<div class="tweet-note">📝 ' + escapeHtml(tweet.note) + '</div>';
+        }
+        
+        html += '<div class="tweet-actions">';
+        html += '<a href="' + escapeHtml(tweet.url) + '" target="_blank" class="tweet-link">🔗 查看原文</a>';
+        html += '<button class="tweet-btn delete" onclick="deleteTweet(' + tweet.id + ')">🗑️ 删除</button>';
+        html += '</div>';
+        html += '</div>';
+    }
+    
+    container.innerHTML = html;
+}
+
+function saveTweets() {
+    try {
+        localStorage.setItem('xiaodong_tweets', JSON.stringify(appData.tweets));
+    } catch (e) {
+        console.log('无法保存推文');
+    }
+}
+
+function loadTweets() {
+    try {
+        var saved = localStorage.getItem('xiaodong_tweets');
+        if (saved) {
+            appData.tweets = JSON.parse(saved);
+        }
+    } catch (e) {
+        console.log('无法加载推文');
+    }
+}
+
+// 加载已保存的推文
+loadTweets();
+
+// ==================== Initialize ====================
+document.addEventListener('DOMContentLoaded', function() {
+    initNavigation();
+    initFilters();
+    initTodos();
+    initTweets();
+    loadData();
+    updateStats();
+    showSection('overview');
+    renderTweetTags();
+});

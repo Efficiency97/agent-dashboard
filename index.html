@@ -7,7 +7,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <link rel="stylesheet" href="css/style.css?v=2026021013">
+    <link rel="stylesheet" href="css/style.css?v=2026021014">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -36,6 +36,10 @@
             <li class="nav-item" data-section="todos">
                 <span class="nav-icon">✅</span>
                 <span class="nav-text">待办事项</span>
+            </li>
+            <li class="nav-item" data-section="tweets">
+                <span class="nav-icon">🐦</span>
+                <span class="nav-text">推文收藏</span>
             </li>
             <li class="nav-item" data-section="problems">
                 <span class="nav-icon">⚠️</span>
@@ -182,8 +186,20 @@
                 </div>
             </div>
         </section>
+
+        <!-- 推文收藏 Section -->
+        <section id="tweets" class="section">
+            <h1>🐦 推文收藏</h1>
+            <div class="tweets-filter-bar">
+                <input type="text" id="tweet-search" placeholder="搜索推文...">
+                <select id="tweet-tag-filter">
+                    <option value="all">全部标签</option>
+                </select>
+            </div>
+            <div id="tweets-list" class="tweets-grid"></div>
+        </section>
     </main>
 
-    <script src="js/app.js?v=2026021013"></script>
+    <script src="js/app.js?v=2026021014"></script>
 </body>
 </html>
