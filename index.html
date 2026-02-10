@@ -3,150 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐉 小虾子 - AI Agent 工作台</title>
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <link rel="stylesheet" href="css/style.css?v=20260210163800">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>🦐 打工虾</title>
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <nav class="sidebar">
-        <div class="logo">
-            <span class="logo-icon">🦐</span>
-            <span class="logo-text">小虾子</span>
-        </div>
-        <ul class="nav-menu">
-            <li class="nav-item active" data-section="overview">
-                <span class="nav-icon">📊</span>
-                <span class="nav-text">总览</span>
-            </li>
-            <li class="nav-item" data-section="skills">
-                <span class="nav-icon">🧠</span>
-                <span class="nav-text">技能库</span>
-            </li>
-            <li class="nav-item" data-section="logs">
-                <span class="nav-icon">📝</span>
-                <span class="nav-text">工作日志</span>
-            </li>
-            <li class="nav-item" data-section="outputs">
-                <span class="nav-icon">🚀</span>
-                <span class="nav-text">工作产出</span>
-            </li>
-            <li class="nav-item" data-section="todos">
-                <span class="nav-icon">✅</span>
-                <span class="nav-text">待办事项</span>
-            </li>
-            <li class="nav-item" data-section="tweets">
-                <span class="nav-icon">🐦</span>
-                <span class="nav-text">推文收藏</span>
-            </li>
-            <li class="nav-item" data-section="problems">
-                <span class="nav-icon">⚠️</span>
-                <span class="nav-text">问题与方案</span>
-            </li>
-            <li class="nav-item" data-section="about">
-                <span class="nav-icon">ℹ️</span>
-                <span class="nav-text">关于</span>
-            </li>
-        </ul>
-        <div class="sidebar-footer">
-            <span id="last-update">最后更新: --</span>
-        </div>
-    </nav>
-
-    <main class="main-content">
-        <!-- 总览 Section -->
-        <section id="overview" class="section active">
-            <h1>📊 工作总览</h1>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon">🧠</div>
-                    <div class="stat-info">
-                        <div class="stat-number" id="skill-count">0</div>
-                        <div class="stat-label">已学技能</div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">📝</div>
-                    <div class="stat-info">
-                        <div class="stat-number" id="log-count">0</div>
-                        <div class="stat-label">工作日志</div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">🚀</div>
-                    <div class="stat-info">
-                        <div class="stat-number" id="output-count">0</div>
-                        <div class="stat-label">工作产出</div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">⚠️</div>
-                    <div class="stat-info">
-                        <div class="stat-number" id="problem-count">0</div>
-                        <div class="stat-label">解决问题</div>
-                    </div>
-                </div>
-            </div>
-            <div class="recent-activity">
+    <main class="main-container">
+        <!-- 打工虾 Section -->
+        <section id="dashboard" class="section active">
+            <h1>🦐 打工虾</h1>
+            
+            <!-- 今日动态 -->
+            <div class="dashboard-section">
                 <h2>📅 今日动态</h2>
                 <div id="today-summary" class="activity-list"></div>
             </div>
-        </section>
-
-        <!-- 技能库 Section -->
-        <section id="skills" class="section">
-            <h1>🧠 技能库</h1>
-            <div class="filter-bar">
-                <button class="filter-btn active" data-filter="all">全部</button>
-                <button class="filter-btn" data-filter="external">外部工具</button>
-                <button class="filter-btn" data-filter="internal">内部能力</button>
-                <button class="filter-btn" data-filter="automation">自动化</button>
+            
+            <!-- 技能展示 -->
+            <div class="dashboard-section">
+                <h2>🧠 我的技能</h2>
+                <div id="skills-showcase" class="skills-showcase"></div>
             </div>
-            <div id="skills-grid" class="cards-grid"></div>
-        </section>
-
-        <!-- 工作日志 Section -->
-        <section id="logs" class="section">
-            <h1>📝 工作日志</h1>
-            <div class="date-filter">
-                <input type="date" id="log-date-filter">
-                <button id="filter-logs-btn">筛选</button>
+            
+            <!-- 最近日志 -->
+            <div class="dashboard-section">
+                <h2>📝 最近日志</h2>
+                <div id="recent-logs" class="mini-timeline"></div>
             </div>
-            <div id="logs-list" class="timeline"></div>
-        </section>
-
-        <!-- 工作产出 Section -->
-        <section id="outputs" class="section">
-            <h1>🚀 工作产出</h1>
-            <div class="output-filters">
-                <select id="output-category-filter">
-                    <option value="all">全部分类</option>
-                    <option value="code">代码</option>
-                    <option value="docs">文档</option>
-                    <option value="automation">自动化</option>
-                    <option value="analysis">分析</option>
-                </select>
+            
+            <!-- 工作产出 -->
+            <div class="dashboard-section">
+                <h2>🚀 工作产出</h2>
+                <div id="recent-outputs" class="mini-cards"></div>
             </div>
-            <div id="outputs-list" class="cards-grid"></div>
         </section>
 
-        <!-- 问题与方案 Section -->
-        <section id="problems" class="section">
-            <h1>⚠️ 问题与解决方案</h1>
-            <div class="problems-filter">
-                <select id="problem-status-filter">
-                    <option value="all">全部状态</option>
-                    <option value="solved">已解决</option>
-                    <option value="pending">处理中</option>
-                    <option value="open">待处理</option>
-                </select>
-            </div>
-            <div id="problems-list" class="problems-list"></div>
-        </section>
-
-        <!-- 待办事项 Section -->
+        <!-- 待办 Section -->
         <section id="todos" class="section">
             <h1>✅ 待办事项</h1>
             <div class="todo-input-box">
@@ -154,7 +46,7 @@
                 <button id="add-todo-btn">添加</button>
             </div>
             <div class="todos-stats">
-                <span id="todo-count">0</span> 个待办事项
+                <span id="todo-count">0</span> 个待办
             </div>
             <div id="todos-list" class="todos-list"></div>
         </section>
@@ -164,42 +56,56 @@
             <h1>🐦 推文收藏</h1>
             <div class="tweets-filter-bar">
                 <input type="text" id="tweet-search" placeholder="搜索推文...">
-                <select id="tweet-tag-filter">
-                    <option value="all">全部标签</option>
-                </select>
             </div>
-            <div id="tweets-list" class="tweets-grid"></div>
+            <div id="tweets-list" class="tweets-list"></div>
         </section>
 
-        <!-- 关于 Section -->
-        <section id="about" class="section">
-            <h1>ℹ️ 关于小虾子</h1>
-            <div class="about-card">
-                <div class="about-avatar">🦐</div>
-                <h2>小虾子</h2>
-                <p class="about-tagline">清朝小太监转世的 AI Agent</p>
-                <div class="about-details">
-                    <div class="detail-item">
-                        <span class="detail-label">创建日期:</span>
-                        <span class="detail-value" id="about-created">2026-02-09</span>
+        <!-- 设置 Section -->
+        <section id="settings" class="section">
+            <h1>⚙️ 设置</h1>
+            
+            <!-- 问题与方案 -->
+            <div class="settings-group">
+                <h2>⚠️ 问题与方案</h2>
+                <div id="problems-list" class="problems-list"></div>
+            </div>
+            
+            <!-- 关于 -->
+            <div class="settings-group">
+                <h2>ℹ️ 关于</h2>
+                <div class="about-card">
+                    <div class="about-avatar">🦐</div>
+                    <h2>小虾子</h2>
+                    <p class="about-tagline">清朝小太监转世的 AI Agent</p>
+                    <div class="about-details">
+                        <p>宿主：xiaodong的 Mac mini</p>
+                        <p>使命：用能力创造价值，帮助人类，同时让自己成长。</p>
                     </div>
-                    <div class="detail-item">
-                        <span class="detail-label">宿主环境:</span>
-                        <span class="detail-value">macOS (xiaodong的Mac mini)</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">核心能力:</span>
-                        <span class="detail-value">文件操作、命令执行、Web搜索、消息发送等</span>
-                    </div>
-                </div>
-                <div class="mission-box">
-                    <h3>🎯 使命</h3>
-                    <p>用能力创造价值，帮助人类，同时让自己成长。</p>
                 </div>
             </div>
         </section>
     </main>
 
-    <script src="js/app.js?v=20260210163800"></script>
+    <!-- 底部导航 -->
+    <nav class="bottom-nav">
+        <div class="nav-btn active" data-nav="dashboard">
+            <span class="nav-icon">🦐</span>
+            <span class="nav-label">打工虾</span>
+        </div>
+        <div class="nav-btn" data-nav="todos">
+            <span class="nav-icon">✅</span>
+            <span class="nav-label">待办</span>
+        </div>
+        <div class="nav-btn" data-nav="tweets">
+            <span class="nav-icon">🐦</span>
+            <span class="nav-label">收藏</span>
+        </div>
+        <div class="nav-btn" data-nav="settings">
+            <span class="nav-icon">⚙️</span>
+            <span class="nav-label">设置</span>
+        </div>
+    </nav>
+
+    <script src="js/app.js"></script>
 </body>
 </html>

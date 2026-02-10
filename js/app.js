@@ -1,152 +1,94 @@
-// Agent Dashboard - Main Application
+// Agent Dashboard - Simplified
 
-// ==================== Data Store ====================
 var appData = {
     todos: [],
     skills: [
-        {id: 'file-ops', name: '文件操作', icon: '📁', category: 'internal', description: '读取、创建、编辑文件内容', commands: ['read', 'write', 'edit'], learned: '2026-02-09', usageCount: 45},
-        {id: 'exec', name: '命令执行', icon: '💻', category: 'internal', description: '执行shell命令', commands: ['exec', 'process'], learned: '2026-02-09', usageCount: 38},
-        {id: 'web-search', name: 'Web搜索', icon: '🔍', category: 'external', description: '使用Brave API搜索', commands: ['web_search', 'web_fetch'], learned: '2026-02-09', usageCount: 12},
-        {id: 'telegram', name: 'Telegram消息', icon: '📱', category: 'external', description: '发送Telegram消息', commands: ['message'], learned: '2026-02-09', usageCount: 156},
-        {id: 'cron', name: '定时任务', icon: '⏰', category: 'automation', description: '管理定时任务', commands: ['cron'], learned: '2026-02-09', usageCount: 8},
-        {id: 'memory', name: '记忆系统', icon: '🧠', category: 'internal', description: '语义搜索记忆', commands: ['memory_search', 'memory_get'], learned: '2026-02-09', usageCount: 23},
-        {id: 'openai-whisper', name: '语音转文字', icon: '🎙️', category: 'external', description: 'Whisper语音转录', commands: ['whisper --model tiny'], learned: '2026-02-10', usageCount: 0},
-        {id: 'tts', name: '文字转语音', icon: '🔊', category: 'external', description: 'TTS语音合成', commands: ['tts'], learned: '2026-02-10', usageCount: 0},
-        {id: 'browser', name: '浏览器控制', icon: '🌐', category: 'external', description: '浏览器自动化', commands: ['browser'], learned: '2026-02-10', usageCount: 2},
-        {id: 'github', name: 'GitHub操作', icon: '🐙', category: 'external', description: 'GitHub CLI管理', commands: ['gh issue', 'gh pr'], learned: '2026-02-10', usageCount: 1},
-        {id: 'dashboard', name: '小虾子网站', icon: '🐉', category: 'automation', description: '工作台网站', commands: ['write', 'exec'], learned: '2026-02-10', usageCount: 1},
-        {id: 'wechat-summary', name: '微信文章总结', icon: '📱', category: 'external', description: '抓取并总结微信文章', commands: ['web_fetch'], learned: '2026-02-10', usageCount: 0},
-        {id: 'twitter-summary', name: '推文批量总结', icon: '🐦', category: 'external', description: '解析并总结推文', commands: ['fxtwitter-api'], learned: '2026-02-10', usageCount: 0}
+        {id: 'file-ops', name: '📁 文件操作'},
+        {id: 'exec', name: '💻 命令执行'},
+        {id: 'web-search', name: '🔍 Web搜索'},
+        {id: 'telegram', name: '📱 Telegram'},
+        {id: 'cron', name: '⏰ 定时任务'},
+        {id: 'memory', name: '🧠 记忆系统'},
+        {id: 'whisper', name: '🎙️ 语音转文字'},
+        {id: 'tts', name: '🔊 文字转语音'},
+        {id: 'browser', name: '🌐 浏览器控制'},
+        {id: 'github', name: '🐙 GitHub'},
+        {id: 'wechat', name: '📱 微信总结'},
+        {id: 'twitter', name: '🐦 推文总结'}
     ],
     logs: [
-        {date: '2026-02-10', time: '10:26', title: '🚀 Agent Dashboard 上线', content: '创建个人工作台网站'},
-        {date: '2026-02-10', time: '09:56', title: '📈 美股总结', content: '汇总昨晚美股表现'},
-        {date: '2026-02-10', time: '09:30', title: '☕ 早上咖啡', content: '发送提醒'},
+        {date: '2026-02-10', time: '14:31', title: '🦞 CLAW Auto Mint', content: '每小时市场汇报'},
+        {date: '2026-02-10', time: '10:26', title: '🚀 Dashboard上线', content: '创建个人工作台'},
+        {date: '2026-02-10', time: '09:56', title: '📈 美股总结', content: '分析昨晚表现'},
+        {date: '2026-02-10', time: '09:30', title: '☕ 咖啡时间', content: '发送提醒'},
         {date: '2026-02-10', time: '09:00', title: '🦞 身份守则', content: '提醒自主AI身份'},
         {date: '2026-02-09', time: '22:00', title: '📝 AI日记', content: '生成每日记录'}
     ],
     outputs: [
-        {id: 1, title: '个人网站 Dashboard', category: 'code', description: '记录技能日志产出问题', date: '2026-02-10', status: 'completed'},
-        {id: 2, title: '纳斯达克技术分析', category: 'analysis', description: '分析支撑阻力位', date: '2026-02-10', status: 'completed'},
-        {id: 3, title: 'CLAW Auto Mint 系统', category: 'automation', description: '每小时市场汇报', date: '2026-02-09', status: 'active'}
+        {id: 1, title: '个人网站 Dashboard', status: 'completed'},
+        {id: 2, title: '纳斯达克分析', status: 'completed'},
+        {id: 3, title: 'CLAW Auto Mint 系统', status: 'active'},
+        {id: 4, title: 'Moltbook 自动检查', status: 'pending'}
     ],
     problems: [
-        {id: 1, title: 'Moltbook 暂停', status: 'pending', content: '等待自动恢复', solution: '遵守平台规则', created: '2026-02-10'},
-        {id: 2, title: 'ngrok 认证', status: 'open', content: '需配置token', solution: '用GitHub Pages替代', created: '2026-02-10'}
+        {id: 1, title: 'Moltbook 暂停', status: 'pending', content: '等待自动恢复', solution: '遵守平台规则'},
+        {id: 2, title: 'ngrok 认证', status: 'solved', content: '需配置token', solution: '用GitHub Pages替代'}
     ],
     tweets: []
 };
 
 // ==================== Navigation ====================
 function initNavigation() {
-    var navItems = document.querySelectorAll('.nav-item');
-    for (var i = 0; i < navItems.length; i++) {
-        navItems[i].addEventListener('click', function() {
-            var section = this.dataset.section;
-            showSection(section);
+    var navBtns = document.querySelectorAll('.nav-btn');
+    navBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var navId = this.dataset.nav;
+            showSection(navId);
         });
-    }
+    });
 }
 
 function showSection(sectionId) {
-    var navItems = document.querySelectorAll('.nav-item');
-    for (var i = 0; i < navItems.length; i++) {
-        navItems[i].classList.toggle('active', navItems[i].dataset.section === sectionId);
-    }
-    var sections = document.querySelectorAll('.section');
-    for (var i = 0; i < sections.length; i++) {
-        sections[i].classList.toggle('active', sections[i].id === sectionId);
-    }
+    // Update nav
+    document.querySelectorAll('.nav-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.nav === sectionId);
+    });
+    // Update section
+    document.querySelectorAll('.section').forEach(function(section) {
+        section.classList.toggle('active', section.id === sectionId);
+    });
 }
 
-// ==================== Filters ====================
-function initFilters() {
-    var skillFilters = document.querySelectorAll('#skills .filter-btn');
-    for (var i = 0; i < skillFilters.length; i++) {
-        skillFilters[i].addEventListener('click', function() {
-            for (var j = 0; j < skillFilters.length; j++) skillFilters[j].classList.remove('active');
-            this.classList.add('active');
-            renderSkills(this.dataset.filter);
-        });
-    }
-    var outputFilter = document.getElementById('output-category-filter');
-    if (outputFilter) outputFilter.addEventListener('change', function(e) { renderOutputs(e.target.value); });
-    var problemFilter = document.getElementById('problem-status-filter');
-    if (problemFilter) problemFilter.addEventListener('change', function(e) { renderProblems(e.target.value); });
-}
-
-// ==================== Data Rendering ====================
-function loadData() {
-    renderSkills('all');
-    renderLogs();
-    renderOutputs('all');
-    renderProblems('all');
-    renderTodos();
-    renderTweets();
-    renderTodaySummary();
-    updateStats();
-    updateLastUpdate();
-}
-
-function renderSkills(filter) {
-    filter = filter || 'all';
-    var grid = document.getElementById('skills-grid');
-    var filtered = filter === 'all' ? appData.skills : appData.skills.filter(function(s) { return s.category === filter; });
-    var html = '';
-    for (var i = 0; i < filtered.length; i++) {
-        var skill = filtered[i];
-        html += '<div class="card"><div class="card-header"><span class="card-icon">' + skill.icon + '</span><span class="card-title">' + skill.name + '</span></div><p class="card-description">' + skill.description + '</p><div class="card-tags"><span class="tag ' + skill.category + '">' + getCategoryName(skill.category) + '</span><span class="tag">使用 ' + skill.usageCount + ' 次</span></div></div>';
-    }
-    grid.innerHTML = html;
-}
-
-function renderLogs() {
-    var container = document.getElementById('logs-list');
-    var html = '';
-    for (var i = 0; i < appData.logs.length; i++) {
-        var log = appData.logs[i];
-        html += '<div class="timeline-item"><div class="timeline-date">' + log.date + ' ' + log.time + '</div><div class="timeline-title">' + log.title + '</div><div class="timeline-content">' + log.content + '</div></div>';
-    }
-    container.innerHTML = html;
-}
-
-function renderOutputs(filter) {
-    filter = filter || 'all';
-    var container = document.getElementById('outputs-list');
-    var filtered = filter === 'all' ? appData.outputs : appData.outputs.filter(function(o) { return o.category === filter; });
-    var html = '';
-    for (var i = 0; i < filtered.length; i++) {
-        var output = filtered[i];
-        html += '<div class="card"><div class="card-header"><span class="card-icon">' + getCategoryIcon(output.category) + '</span><span class="card-title">' + output.title + '</span></div><p class="card-description">' + output.description + '</p><div class="card-tags"><span class="tag ' + output.category + '">' + getCategoryName(output.category) + '</span><span class="tag ' + (output.status === 'completed' ? 'solved' : 'pending') + '">' + (output.status === 'completed' ? '已完成' : '进行中') + '</span></div></div>';
-    }
-    container.innerHTML = html;
-}
-
-function renderProblems(filter) {
-    filter = filter || 'all';
-    var container = document.getElementById('problems-list');
-    var filtered = filter === 'all' ? appData.problems : appData.problems.filter(function(p) { return p.status === filter; });
-    var html = '';
-    for (var i = 0; i < filtered.length; i++) {
-        var problem = filtered[i];
-        html += '<div class="problem-item"><div class="problem-header"><span class="problem-title">' + problem.title + '</span><span class="problem-status tag ' + problem.status + '">' + getStatusName(problem.status) + '</span></div><div class="problem-content">' + problem.content + '</div><div class="solution-box"><div class="solution-title">解决方案</div><div class="solution_content">' + (problem.solution || '暂无') + '</div></div><div class="card-tags" style="margin-top:12px"><span class="tag">创建: ' + problem.created + '</span></div></div>';
-    }
-    container.innerHTML = html;
-}
-
-function renderTodaySummary() {
-    var container = document.getElementById('today-summary');
+// ==================== Dashboard ====================
+function renderDashboard() {
+    // Today summary
     var today = new Date().toISOString().split('T')[0];
     var todayLogs = appData.logs.filter(function(l) { return l.date === today; });
-    if (todayLogs.length === 0) {
-        container.innerHTML = '<p style="color: var(--text-secondary);">今日暂无记录</p>';
-        return;
+    var container = document.getElementById('today-summary');
+    if (todayLogs.length > 0) {
+        container.innerHTML = todayLogs.slice(0, 3).map(function(log) {
+            return '<div class="activity-item"><span class="activity-time">' + log.time + '</span><span>' + log.title + '</span></div>';
+        }).join('');
+    } else {
+        container.innerHTML = '<div class="activity-item"><span>今日暂无记录</span></div>';
     }
-    var html = '';
-    for (var i = 0; i < Math.min(todayLogs.length, 5); i++) {
-        html += '<div class="activity-item"><span class="activity-time">' + todayLogs[i].time + '</span><span class="activity-content">' + todayLogs[i].title + '</span></div>';
-    }
-    container.innerHTML = html;
+    
+    // Skills showcase
+    document.getElementById('skills-showcase').innerHTML = appData.skills.map(function(skill) {
+        return '<span class="skill-tag">' + skill.name + '</span>';
+    }).join('');
+    
+    // Recent logs
+    document.getElementById('recent-logs').innerHTML = appData.logs.slice(0, 4).map(function(log) {
+        return '<div class="mini-timeline-item"><span class="date">' + log.date + ' ' + log.time + '</span><span>' + log.title + '</span></div>';
+    }).join('');
+    
+    // Recent outputs
+    document.getElementById('recent-outputs').innerHTML = appData.outputs.slice(0, 4).map(function(o) {
+        var statusClass = o.status === 'completed' ? 'completed' : 'active';
+        var statusText = o.status === 'completed' ? '已完成' : (o.status === 'active' ? '进行中' : '待处理');
+        return '<div class="mini-card"><div class="mini-card-title">' + o.title + '</div><div class="mini-card-status ' + statusClass + '">' + statusText + '</div></div>';
+    }).join('');
 }
 
 // ==================== Todos ====================
@@ -154,7 +96,7 @@ function initTodos() {
     var addBtn = document.getElementById('add-todo-btn');
     var input = document.getElementById('new-todo-input');
     if (addBtn && input) {
-        addBtn.addEventListener('click', function() { addTodo(); });
+        addBtn.addEventListener('click', addTodo);
         input.addEventListener('keypress', function(e) { if (e.key === 'Enter') addTodo(); });
     }
 }
@@ -163,52 +105,32 @@ function addTodo() {
     var input = document.getElementById('new-todo-input');
     var text = input.value.trim();
     if (!text) return;
-    appData.todos.unshift({ id: Date.now(), text: text, status: 'pending', priority: 'medium', created: new Date().toISOString().split('T')[0] });
+    appData.todos.unshift({ id: Date.now(), text: text, status: 'pending' });
     input.value = '';
     renderTodos();
-    updateTodoCount();
     saveTodos();
 }
 
 function toggleTodo(id) {
     var todo = appData.todos.find(function(t) { return t.id === id; });
     if (todo) {
-        todo.status = todo.status === 'pending' ? 'completed' : 'pending';
-        if (todo.status === 'completed') {
-            appData.todos.push(appData.todos.splice(appData.todos.findIndex(function(t) { return t.id === id; }), 1)[0]);
-        }
+        appData.todos = appData.todos.filter(function(t) { return t.id !== id; });
         renderTodos();
-        updateTodoCount();
         saveTodos();
     }
 }
 
-function deleteTodo(id) {
-    appData.todos = appData.todos.filter(function(t) { return t.id !== id; });
-    renderTodos();
-    updateTodoCount();
-    saveTodos();
-}
-
 function renderTodos() {
     var container = document.getElementById('todos-list');
-    var pendingTodos = appData.todos.filter(function(t) { return t.status === 'pending'; });
-    if (pendingTodos.length === 0) {
-        container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 40px;">暂无待办事项</p>';
+    var count = appData.todos.length;
+    document.getElementById('todo-count').textContent = count;
+    if (count === 0) {
+        container.innerHTML = '<div class="todo-item"><span class="todo-text">暂无待办事项 🎉</span></div>';
         return;
     }
-    var html = '';
-    for (var i = 0; i < pendingTodos.length; i++) {
-        var todo = pendingTodos[i];
-        html += '<div class="todo-item"><div class="todo-content"><span class="todo-text">' + escapeHtml(todo.text) + '</span></div><div class="todo-actions"><button class="todo-btn complete" onclick="toggleTodo(' + todo.id + ')">✓</button><button class="todo-btn delete" onclick="deleteTodo(' + todo.id + ')">✕</button></div></div>';
-    }
-    container.innerHTML = html;
-}
-
-function updateTodoCount() {
-    var count = appData.todos.filter(function(t) { return t.status === 'pending'; }).length;
-    var el = document.getElementById('todo-count');
-    if (el) el.textContent = count;
+    container.innerHTML = appData.todos.map(function(todo) {
+        return '<div class="todo-item"><span class="todo-text">' + escapeHtml(todo.text) + '</span><div class="todo-actions"><button class="todo-btn complete" onclick="toggleTodo(' + todo.id + ')">✓</button></div></div>';
+    }).join('');
 }
 
 function saveTodos() {
@@ -225,9 +147,9 @@ function loadTodos() {
 // ==================== Tweets ====================
 function initTweets() {
     var searchInput = document.getElementById('tweet-search');
-    var tagFilter = document.getElementById('tweet-tag-filter');
-    if (searchInput) searchInput.addEventListener('input', function() { renderTweets(); });
-    if (tagFilter) tagFilter.addEventListener('change', function() { renderTweets(); });
+    if (searchInput) {
+        searchInput.addEventListener('input', renderTweets);
+    }
 }
 
 function addTweet(tweetData) {
@@ -238,11 +160,10 @@ function addTweet(tweetData) {
         content: tweetData.content || '',
         tags: tweetData.tags || [],
         note: tweetData.note || '',
-        created: tweetData.created || new Date().toISOString().split('T')[0]
+        created: new Date().toISOString().split('T')[0]
     };
     appData.tweets.unshift(tweet);
     renderTweets();
-    renderTweetTags();
     saveTweets();
     return tweet;
 }
@@ -250,48 +171,27 @@ function addTweet(tweetData) {
 function deleteTweet(id) {
     appData.tweets = appData.tweets.filter(function(t) { return t.id !== id; });
     renderTweets();
-    renderTweetTags();
     saveTweets();
-}
-
-function renderTweetTags() {
-    var tagFilter = document.getElementById('tweet-tag-filter');
-    if (!tagFilter) return;
-    var allTags = {};
-    appData.tweets.forEach(function(t) { t.tags.forEach(function(tag) { allTags[tag] = (allTags[tag] || 0) + 1; }); });
-    var options = '<option value="all">全部标签</option>';
-    Object.keys(allTags).sort().forEach(function(tag) { options += '<option value="' + tag + '">' + tag + ' (' + allTags[tag] + ')</option>'; });
-    tagFilter.innerHTML = options;
 }
 
 function renderTweets() {
     var container = document.getElementById('tweets-list');
     if (!container) return;
     var searchTerm = document.getElementById('tweet-search').value.toLowerCase();
-    var tagFilter = document.getElementById('tweet-tag-filter').value;
     var filtered = appData.tweets.filter(function(t) {
-        var matchesSearch = !searchTerm || t.content.toLowerCase().includes(searchTerm) || t.author.toLowerCase().includes(searchTerm) || t.tags.some(function(tag) { return tag.toLowerCase().includes(searchTerm); });
-        var matchesTag = tagFilter === 'all' || t.tags.includes(tagFilter);
-        return matchesSearch && matchesTag;
+        return !searchTerm || t.content.toLowerCase().includes(searchTerm) || 
+               t.author.toLowerCase().includes(searchTerm) ||
+               t.tags.some(function(tag) { return tag.toLowerCase().includes(searchTerm); });
     });
     if (filtered.length === 0) {
-        container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 40px;">暂无收藏的推文<br><br>发送链接给我，我来帮你收藏！</p>';
+        container.innerHTML = '<div class="tweet-card"><div class="tweet-content">暂无收藏的推文</div></div>';
         return;
     }
-    var html = '';
-    for (var i = 0; i < filtered.length; i++) {
-        var tweet = filtered[i];
-        html += '<div class="tweet-card"><div class="tweet-header"><span class="tweet-author">@' + escapeHtml(tweet.author) + '</span><span class="tweet-date">' + tweet.created + '</span></div>';
-        if (tweet.content) html += '<div class="tweet-content">' + escapeHtml(tweet.content).substring(0, 200) + '</div>';
-        if (tweet.tags.length > 0) {
-            html += '<div class="tweet-tags">';
-            tweet.tags.forEach(function(tag) { html += '<span class="tweet-tag">' + escapeHtml(tag) + '</span>'; });
-            html += '</div>';
-        }
-        if (tweet.note) html += '<div class="tweet-note">📝 ' + escapeHtml(tweet.note) + '</div>';
-        html += '<div class="tweet-actions"><a href="' + escapeHtml(tweet.url) + '" target="_blank" class="tweet-link">🔗 查看原文</a><button class="tweet-btn delete" onclick="deleteTweet(' + tweet.id + ')">🗑️</button></div></div>';
-    }
-    container.innerHTML = html;
+    container.innerHTML = filtered.map(function(t) {
+        var tagsHtml = t.tags.map(function(tag) { return '<span class="tweet-tag">' + escapeHtml(tag) + '</span>'; }).join('');
+        var noteHtml = t.note ? '<div class="tweet-note">📝 ' + escapeHtml(t.note) + '</div>' : '';
+        return '<div class="tweet-card"><div class="tweet-header"><span class="tweet-author">@' + escapeHtml(t.author) + '</span><span class="tweet-date">' + t.created + '</span></div><div class="tweet-content">' + escapeHtml(t.content).substring(0, 150) + '</div>' + (tagsHtml ? '<div class="tweet-tags">' + tagsHtml + '</div>' : '') + noteHtml + '<div class="tweet-actions"><a href="' + escapeHtml(t.url) + '" target="_blank" class="tweet-link">🔗 查看原文</a></div></div>';
+    }).join('');
 }
 
 function saveTweets() {
@@ -305,38 +205,18 @@ function loadTweets() {
     } catch (e) {}
 }
 
-// ==================== Stats ====================
-function updateStats() {
-    var solvedCount = appData.problems.filter(function(p) { return p.status === 'solved'; }).length;
-    document.getElementById('skill-count').textContent = appData.skills.length;
-    document.getElementById('log-count').textContent = appData.logs.length;
-    document.getElementById('output-count').textContent = appData.outputs.length;
-    document.getElementById('problem-count').textContent = solvedCount + '/' + appData.problems.length;
-}
-
-function updateLastUpdate() {
-    var now = new Date();
-    var formatted = now.toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
-    var el = document.getElementById('last-update');
-    if (el) el.textContent = '最后更新: ' + formatted;
+// ==================== Settings ====================
+function renderProblems() {
+    var container = document.getElementById('problems-list');
+    if (!container) return;
+    container.innerHTML = appData.problems.map(function(p) {
+        var statusClass = p.status === 'solved' ? 'solved' : 'pending';
+        var statusText = p.status === 'solved' ? '已解决' : '处理中';
+        return '<div class="problem-item"><div class="problem-title">' + p.title + '</div><span class="problem-status ' + statusClass + '">' + statusText + '</span><div class="problem-content">' + p.content + '</div>' + (p.solution ? '<div class="solution-box">💡 ' + p.solution + '</div>' : '') + '</div>';
+    }).join('');
 }
 
 // ==================== Utilities ====================
-function getCategoryName(category) {
-    var names = { 'external': '外部工具', 'internal': '内部能力', 'automation': '自动化', 'code': '代码', 'docs': '文档', 'analysis': '分析' };
-    return names[category] || category;
-}
-
-function getCategoryIcon(category) {
-    var icons = { 'external': '🔧', 'internal': '🧠', 'automation': '⚡', 'code': '💻', 'docs': '📄', 'analysis': '📊' };
-    return icons[category] || '📁';
-}
-
-function getStatusName(status) {
-    var names = { 'solved': '已解决', 'pending': '处理中', 'open': '待处理' };
-    return names[status] || status;
-}
-
 function escapeHtml(text) {
     var div = document.createElement('div');
     div.textContent = text;
@@ -348,9 +228,11 @@ loadTodos();
 loadTweets();
 document.addEventListener('DOMContentLoaded', function() {
     initNavigation();
-    initFilters();
     initTodos();
     initTweets();
-    loadData();
-    showSection('overview');
+    renderDashboard();
+    renderTodos();
+    renderTweets();
+    renderProblems();
+    showSection('dashboard');
 });
