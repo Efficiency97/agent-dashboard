@@ -2,6 +2,11 @@
 
 // ==================== Data Store ====================
 var appData = {
+    todos: [
+        {id: 1, text: '配置 Lighter Perp DEX API', status: 'pending', priority: 'high', created: '2026-02-10'},
+        {id: 2, text: '集成 Things 3 待办同步', status: 'pending', priority: 'medium', created: '2026-02-10'},
+        {id: 3, text: '启用 GitHub Pages 访问', status: 'pending', priority: 'medium', created: '2026-02-10'}
+    ],
     skills: [
         {id: 'file-ops', name: '文件操作', icon: '📁', category: 'internal', description: '读取、创建、编辑文件内容，支持文本和图片文件处理', commands: ['read', 'write', 'edit'], learned: '2026-02-09', usageCount: 45},
         {id: 'exec', name: '命令执行', icon: '💻', category: 'internal', description: '执行shell命令，支持后台运行、TTY模式、环境变量配置', commands: ['exec', 'process'], learned: '2026-02-09', usageCount: 38},
@@ -47,6 +52,7 @@ var appData = {
 document.addEventListener('DOMContentLoaded', function() {
     initNavigation();
     initFilters();
+    initTodos();
     loadData();
     updateStats();
     showSection('overview');
@@ -125,6 +131,7 @@ function loadData() {
     renderLogs();
     renderOutputs('all');
     renderProblems('all');
+    renderTodos();
     renderTodaySummary();
     updateLastUpdate();
 }
@@ -306,4 +313,128 @@ function getStatusName(status) {
         'open': '待处理'
     };
     return names[status] || status;
+}
+
+// ==================== Todos ====================
+function initTodos() {
+    var addBtn = document.getElementById('add-todo-btn');
+    var input = document.getElementById('new-todo-input');
+    
+    if (addBtn && input) {
+        addBtn.addEventListener('click', function() {
+            addTodo();
+        });
+        
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addTodo();
+            }
+        });
+    }
+}
+
+function addTodo() {
+    var input = document.getElementById('new-todo-input');
+    var text = input.value.trim();
+    
+    if (!text) return;
+    
+    var newTodo = {
+        id: Date.now(),
+        text: text,
+        status: 'pending',
+        priority: 'medium',
+        created: new Date().toISOString().split('T')[0]
+    };
+    
+    appData.todos.unshift(newTodo);
+    input.value = '';
+    renderTodos();
+    updateTodoCount();
+    saveTodos();
+}
+
+function toggleTodo(id) {
+    var todo = appData.todos.find(function(t) { return t.id === id; });
+    if (todo) {
+        todo.status = todo.status === 'pending' ? 'completed' : 'pending';
+        if (todo.status === 'completed') {
+            appData.todos.push(appData.todos.splice(appData.todos.findIndex(function(t) { return t.id === id; }), 1)[0]);
+        }
+        renderTodos();
+        updateTodoCount();
+        saveTodos();
+    }
+}
+
+function deleteTodo(id) {
+    appData.todos = appData.todos.filter(function(t) { return t.id !== id; });
+    renderTodos();
+    updateTodoCount();
+    saveTodos();
+}
+
+function renderTodos() {
+    var container = document.getElementById('todos-list');
+    if (!container) return;
+    
+    var pendingTodos = appData.todos.filter(function(t) { return t.status === 'pending'; });
+    
+    if (pendingTodos.length === 0) {
+        container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 40px;">暂无待办事项 🎉</p>';
+        return;
+    }
+    
+    var html = '';
+    for (var i = 0; i < pendingTodos.length; i++) {
+        var todo = pendingTodos[i];
+        var priorityClass = todo.priority === 'high' ? 'high' : (todo.priority === 'medium' ? 'medium' : 'low');
+        var priorityIcon = todo.priority === 'high' ? '🔴' : (todo.priority === 'medium' ? '🟡' : '🟢');
+        
+        html += '<div class="todo-item" data-id="' + todo.id + '">';
+        html += '<div class="todo-content">';
+        html += '<span class="todo-priority ' + priorityClass + '">' + priorityIcon + '</span>';
+        html += '<span class="todo-text">' + escapeHtml(todo.text) + '</span>';
+        html += '</div>';
+        html += '<div class="todo-actions">';
+        html += '<button class="todo-btn complete" onclick="toggleTodo(' + todo.id + ')">✓</button>';
+        html += '<button class="todo-btn delete" onclick="deleteTodo(' + todo.id + ')">✕</button>';
+        html += '</div>';
+        html += '</div>';
+    }
+    container.innerHTML = html;
+}
+
+function updateTodoCount() {
+    var count = appData.todos.filter(function(t) { return t.status === 'pending'; }).length;
+    var el = document.getElementById('todo-count');
+    if (el) el.textContent = count;
+}
+
+function saveTodos() {
+    try {
+        localStorage.setItem('xiaodong_todos', JSON.stringify(appData.todos));
+    } catch (e) {
+        console.log('无法保存待办事项');
+    }
+}
+
+function loadTodos() {
+    try {
+        var saved = localStorage.getItem('xiaodong_todos');
+        if (saved) {
+            appData.todos = JSON.parse(saved);
+        }
+    } catch (e) {
+        console.log('无法加载待办事项');
+    }
+}
+
+// 加载已保存的待办
+loadTodos();
+
+function escapeHtml(text) {
+    var div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
