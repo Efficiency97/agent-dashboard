@@ -1,4 +1,4 @@
-// Agent Dashboard - Simplified
+// Agent Dashboard - Collapsible Sidebar
 
 var appData = {
     todos: [],
@@ -37,21 +37,75 @@ var appData = {
     tweets: []
 };
 
+// ==================== Sidebar ====================
+function initSidebar() {
+    var collapseBtn = document.getElementById('collapse-btn');
+    var mobileBtn = document.getElementById('mobile-menu-btn');
+    var sidebar = document.getElementById('sidebar');
+    var overlay = document.querySelector('.sidebar-overlay');
+    
+    // Desktop collapse
+    if (collapseBtn) {
+        collapseBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.body.classList.toggle('sidebar-expanded');
+            try { localStorage.setItem('sidebarExpanded', document.body.classList.contains('sidebar-expanded')); } catch(err) {}
+        });
+    }
+    
+    // Load sidebar state
+    try {
+        var expanded = localStorage.getItem('sidebarExpanded');
+        if (expanded === 'true') document.body.classList.add('sidebar-expanded');
+        else document.body.classList.remove('sidebar-expanded');
+    } catch(err) {}
+    
+    // Mobile menu toggle
+    if (mobileBtn && sidebar) {
+        mobileBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('open');
+            document.body.classList.toggle('sidebar-open');
+            createOverlay();
+        });
+    }
+}
+
+function createOverlay() {
+    var existing = document.querySelector('.sidebar-overlay');
+    if (existing) existing.remove();
+    
+    var overlay = document.createElement('div');
+    overlay.className = 'sidebar-overlay';
+    overlay.addEventListener('click', function() {
+        document.getElementById('sidebar').classList.remove('open');
+        document.body.classList.remove('sidebar-open');
+        this.remove();
+    });
+    document.body.appendChild(overlay);
+    
+    setTimeout(function() { overlay.classList.add('open'); }, 10);
+}
+
 // ==================== Navigation ====================
 function initNavigation() {
-    var navBtns = document.querySelectorAll('.nav-btn');
-    navBtns.forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            var navId = this.dataset.nav;
-            showSection(navId);
+    var navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+            var sectionId = this.dataset.section;
+            showSection(sectionId);
+            
+            // Close mobile menu
+            document.getElementById('sidebar').classList.remove('open');
+            var overlay = document.querySelector('.sidebar-overlay');
+            if (overlay) overlay.remove();
         });
     });
 }
 
 function showSection(sectionId) {
     // Update nav
-    document.querySelectorAll('.nav-btn').forEach(function(btn) {
-        btn.classList.toggle('active', btn.dataset.nav === sectionId);
+    document.querySelectorAll('.nav-item').forEach(function(item) {
+        item.classList.toggle('active', item.dataset.section === sectionId);
     });
     // Update section
     document.querySelectorAll('.section').forEach(function(section) {
@@ -61,33 +115,34 @@ function showSection(sectionId) {
 
 // ==================== Dashboard ====================
 function renderDashboard() {
-    // Today summary
     var today = new Date().toISOString().split('T')[0];
     var todayLogs = appData.logs.filter(function(l) { return l.date === today; });
+    
+    // Today summary
     var container = document.getElementById('today-summary');
     if (todayLogs.length > 0) {
-        container.innerHTML = todayLogs.slice(0, 3).map(function(log) {
+        container.innerHTML = todayLogs.slice(0, 4).map(function(log) {
             return '<div class="activity-item"><span class="activity-time">' + log.time + '</span><span>' + log.title + '</span></div>';
         }).join('');
     } else {
         container.innerHTML = '<div class="activity-item"><span>今日暂无记录</span></div>';
     }
     
-    // Skills showcase
+    // Skills
     document.getElementById('skills-showcase').innerHTML = appData.skills.map(function(skill) {
         return '<span class="skill-tag">' + skill.name + '</span>';
     }).join('');
     
     // Recent logs
     document.getElementById('recent-logs').innerHTML = appData.logs.slice(0, 4).map(function(log) {
-        return '<div class="mini-timeline-item"><span class="date">' + log.date + ' ' + log.time + '</span><span>' + log.title + '</span></div>';
+        return '<div class="mini-timeline-item"><span class="date">' + log.date + '</span><span>' + log.title + '</span></div>';
     }).join('');
     
-    // Recent outputs
-    document.getElementById('recent-outputs').innerHTML = appData.outputs.slice(0, 4).map(function(o) {
+    // Outputs
+    document.getElementById('recent-outputs').innerHTML = appData.outputs.map(function(o) {
         var statusClass = o.status === 'completed' ? 'completed' : 'active';
         var statusText = o.status === 'completed' ? '已完成' : (o.status === 'active' ? '进行中' : '待处理');
-        return '<div class="mini-card"><div class="mini-card-title">' + o.title + '</div><div class="mini-card-status ' + statusClass + '">' + statusText + '</div></div>';
+        return '<div class="mini-card"><div class="mini-card-title">' + o.title + '</div><span class="mini-card-status ' + statusClass + '">' + statusText + '</span></div>';
     }).join('');
 }
 
@@ -112,12 +167,9 @@ function addTodo() {
 }
 
 function toggleTodo(id) {
-    var todo = appData.todos.find(function(t) { return t.id === id; });
-    if (todo) {
-        appData.todos = appData.todos.filter(function(t) { return t.id !== id; });
-        renderTodos();
-        saveTodos();
-    }
+    appData.todos = appData.todos.filter(function(t) { return t.id !== id; });
+    renderTodos();
+    saveTodos();
 }
 
 function renderTodos() {
@@ -147,9 +199,7 @@ function loadTodos() {
 // ==================== Tweets ====================
 function initTweets() {
     var searchInput = document.getElementById('tweet-search');
-    if (searchInput) {
-        searchInput.addEventListener('input', renderTweets);
-    }
+    if (searchInput) searchInput.addEventListener('input', renderTweets);
 }
 
 function addTweet(tweetData) {
@@ -205,7 +255,7 @@ function loadTweets() {
     } catch (e) {}
 }
 
-// ==================== Settings ====================
+// ==================== Problems ====================
 function renderProblems() {
     var container = document.getElementById('problems-list');
     if (!container) return;
@@ -227,6 +277,7 @@ function escapeHtml(text) {
 loadTodos();
 loadTweets();
 document.addEventListener('DOMContentLoaded', function() {
+    initSidebar();
     initNavigation();
     initTodos();
     initTweets();
