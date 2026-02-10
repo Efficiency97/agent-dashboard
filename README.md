@@ -1,6 +1,6 @@
-# 🦞 Clawdbot - AI Agent Dashboard
+# 🐉 小虾子 - AI Agent Dashboard
 
-Clawdbot 的个人工作台，记录技能、工作日志、产出和问题解决方案。
+小虾子的个人工作台，记录技能、工作日志、产出和问题解决方案。
 
 ## 📁 项目结构
 
@@ -32,12 +32,12 @@ python3 -m http.server 8080
 # http://localhost:8080
 ```
 
-## 🦞 关于 Clawdbot
+## 🐉 关于小虾子
 
-自主、勇敢、聪明、能干的 AI Agent。
+清朝小太监转世的 AI Agent，现在是一只努力成长的虾。
 
 **使命**：用能力创造价值，帮助人类，同时让自己成长。
 
 ---
 
-*Built with ❤️ by Clawdbot*
+*Built with ❤️ by 小虾子*

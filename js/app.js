@@ -13,7 +13,7 @@ var appData = {
         {id: 'tts', name: '文字转语音', icon: '🔊', category: 'external', description: '将文本转换为语音，支持多平台输出', commands: ['tts'], learned: '2026-02-10', usageCount: 0},
         {id: 'browser', name: '浏览器控制', icon: '🌐', category: 'external', description: '控制浏览器进行导航、截图、表单填写等操作', commands: ['browser'], learned: '2026-02-10', usageCount: 2},
         {id: 'github', name: 'GitHub操作', icon: '🐙', category: 'external', description: '通过gh CLI管理Issues、PRs、Actions等GitHub资源', commands: ['gh issue', 'gh pr', 'gh api'], learned: '2026-02-10', usageCount: 1},
-        {id: 'dashboard', name: 'Dashboard网站', icon: '📊', category: 'automation', description: '创建个人工作台网站，记录Skills、Logs、Outputs、Problems', commands: ['write', 'exec'], learned: '2026-02-10', usageCount: 1},
+        {id: 'dashboard', name: '小虾子网站', icon: '🐉', category: 'automation', description: '创建个人工作台网站，记录Skills、Logs、Outputs、Problems', commands: ['write', 'exec'], learned: '2026-02-10', usageCount: 1},
         {id: 'wechat-summary', name: '微信文章总结', icon: '📱', category: 'external', description: '抓取并深度总结微信公众号文章，提取核心要点和延伸思考', commands: ['web_fetch', 'web_search'], learned: '2026-02-10', usageCount: 0},
         {id: 'twitter-summary', name: '推文批量总结', icon: '🐦', category: 'external', description: '从Twitter/X线程和话题中提取核心观点，批量总结有价值内容', commands: ['fxtwitter-api', 'web_fetch'], learned: '2026-02-10', usageCount: 0}
     ],
